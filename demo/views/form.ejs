@@ -1,0 +1,109 @@
+<html xmlns:ng="http://angularjs.org">
+<head>
+    <title>フォームバリデーション</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- build:css /css/vendor.css --><!-- bower:css -->
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+<!-- endbower -->
+    <link rel="stylesheet" href="/bower_components/ngAnimate/css/ng-animation.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .ng-dirty.ng-invalid {
+            border-color: red;
+        }
+        .ng-cloak {
+            display: none;
+        }
+    </style>
+</head>
+<body id="ng-app" ng-app="app">
+<div class="container">
+    <header class="page-header">
+        <h1>フォームバリデーション</h1>
+    </header>
+    <div>
+        <form ng-submit="send()" name="validation_form">
+            <p>URLバリデーション</p>
+            <div class="form-group">
+                <input type="url" class="form-control" ng-model="form.url" name="url"/>
+                <div ng-show="validation_form.url.$invalid && validation_form.url.$dirty" class="ng-cloak">
+                    <div ng-show="validation_form.url.$error.url">
+                        URLを正しく入力してください
+                    </div>
+                </div>
+            </div>
+            <p>E-Mailバリデーション</p>
+            <div class="form-group">
+                <input type="email" class="form-control" ng-model="form.email" name="email"/>
+                <div ng-show="validation_form.email.$invalid && validation_form.email.$dirty" class="ng-cloak">
+                    <div ng-show="validation_form.email.$error.email">
+                        E-mailを正しく入力してください
+                    </div>
+                </div>
+            </div>
+
+            <p>条件付き必須</p>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type="radio" ng-model="form.sex" name="sex" value="man" checked>
+                        man
+                    </label>
+
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" ng-model="form.sex" name="sex" value="woman">
+                        woman
+                    </label>
+                </div>
+
+                <div ng-show="form.sex === 'man'" class="ng-cloak">
+                    <div class="checkbox">
+                        <p>名前に「男」がつきますか？</p>
+                        <label>
+                            <input type="checkbox" ng-model="form.man.name"> つきます
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="man_required">入力必須</label>
+                        <input type="text" id="man_required" ng-required="form.sex === 'man'" ng-model="form.man.free" class="form-control"/>
+                    </div>
+                </div>
+                <div ng-show="form.sex === 'woman'" class="ng-cloak">
+                    <div class="checkbox">
+                        <p>名前に「子」がつきますか？</p>
+                        <label>
+                            <input type="checkbox" ng-model="form.woman.name"> つきます
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="woman_required">入力必須</label>
+                        <input type="text" id="woman_required" ng-required="form.sex === 'woman'" ng-model="form.woman.free" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+            <pre class="ng-cloak">model = {{ form | json }}</pre>
+            <input type="submit" class="btn btn-primary" ng-disabled="validation_form.$invalid"/>
+        </form>
+    </div>
+</div>
+
+<!-- build:js /js/vendor.min.js --><!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<!-- endbower --><!-- endbuild -->
+
+<!-- build:js /js/app.js -->
+<script src="/js/app.js"></script>
+<!-- endbuild -->
+</body>
+</html>

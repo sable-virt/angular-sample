@@ -1,0 +1,34 @@
+{
+  "name": "AngularChat",
+  "version": "0.0.0",
+  "authors": [
+    "Hayashi Yuichi <hayashi_yuichi@liginc.co.jp>"
+  ],
+  "appPath": "public",
+  "description": "AngularJS & Socket.io chat",
+  "main": "app.js",
+  "keywords": [
+    "AngularJS",
+    "Socket.io",
+    "chat"
+  ],
+  "license": "MIT",
+  "homepage": "http://liginc.co.jp",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "angular-sanitize": "~1.2.16",
+    "angular-route": "~1.2.16",
+    "angular-animate": "~1.2.16",
+    "ngstorage": "~0.3.0",
+    "ngAnimate": "*",
+    "angular-emoji-filter": "*",
+    "bootstrap": "~3.1.1"
+  }
+}

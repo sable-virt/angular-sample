@@ -1,0 +1,118 @@
+<html xmlns:ng="http://angularjs.org">
+<head>
+    <title>フィルター</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- build:css /css/vendor.css --><!-- bower:css -->
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+<!-- endbower -->
+    <link rel="stylesheet" href="/bower_components/ngAnimate/css/ng-animation.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .ng-dirty.ng-invalid {
+            border-color: red;
+        }
+    </style>
+</head>
+<body id="ng-app" ng-app="app">
+<div class="container">
+    <header class="page-header">
+        <h1>フィルター</h1>
+    </header>
+    <div ng-controller="FilterCtrl">
+        <form name="validation_form">
+            <h2>date</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="input_date" value=""/>
+                <p>{{input_date}}</p>
+                <p>{{input_date | date: 'yyyy/MM/dd HH/mm'}}</p>
+            </div>
+
+            <h2>lowercase</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="lower"/>
+                <p>{{lower}}</p>
+                <p>{{lower | lowercase}}</p>
+            </div>
+
+            <h2>uppercase</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="upper"/>
+                <p>{{upper}}</p>
+                <p>{{upper | uppercase}}</p>
+            </div>
+
+            <h2>number</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="number" ng-init="number=1234.5678" value=""/>
+                <p>{{number}}</p>
+                <p>{{number | number}}</p>
+                <p>{{number | number: 0 }}</p>
+            </div>
+
+            <h2>filter</h2>
+            <select name="" id="" ng-model="type_filter">
+                <option value="">All</option>
+                <option value="human">人</option>
+                <option value="dog">犬</option>
+            </select>
+            <div ng-repeat="val in list | filter: type_filter">
+                {{val.name}}
+            </div>
+
+            <h2>orderBy</h2>
+            <p><input type="button" value="昇順/降順" ng-click="orderReverse = !orderReverse" />
+            <p>
+                <span ng-repeat="val in list | orderBy: ['id'] : orderReverse">
+                    {{val.id}} - {{val.name}}
+                </span>
+            </p>
+        </form>
+    </div>
+</div>
+
+<!-- build:js /js/vendor.min.js --><!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<!-- endbower --><!-- endbuild -->
+
+<!-- build:js /js/app.js -->
+<script src="/js/app.js"></script>
+<script>
+    angular.module('controllers').controller('FilterCtrl',function($scope) {
+        $scope.input_date = new Date();
+        $scope.lower = $scope.upper = 'Life is Good.';
+        $scope.list = [
+            {
+                id: 1,
+                name: 'Ichiro',
+                type: 'human'
+            },
+            {
+                id: 2,
+                name: 'Jiro',
+                type: 'human'
+            },
+            {
+                id: 3,
+                name: 'Hanako',
+                type: 'human'
+            },
+            {
+                id: 4,
+                name: 'Pochi',
+                type: 'dog'
+            }
+        ];
+        $scope.type_filter = '';
+        $scope.orderReverse = true;
+    });
+</script>
+<!-- endbuild -->
+</body>
+</html>

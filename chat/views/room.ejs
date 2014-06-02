@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-md-3">
+        <p><a href="/"><i class="glyphicon glyphicon-home"></i>戻る</a></p>
+
+        <h1>{{room.roomName}}</h1>
+
+        <p>メンバーをチャットに招待するために以下のルームキーが必要です</p>
+
+        <p><input type="text" class="form-control" value="{{room.roomKey}}" readonly/></p>
+
+        <h2>Member</h2>
+        <ul class="list-group">
+            <li class="list-group-item scale-fade-in" ng-click="filterUser(member.uid)"
+                ng-repeat="member in members track by $index"
+                ng-class="{'list-group-item-warning':member.uid === user.uid,'list-group-item-info': query.uid === member.uid}">
+                <span ng-if="user.uid === member.uid" class="label label-success">You</span>
+                <span>{{member.userName}}</span>
+                <span ng-if="member.latestMessage">
+                    {{member.latestMessage.createDate | date: 'HH:mm:ss'}} -
+                    <span ng-bind-html="member.latestMessage.message | emoji"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <form id="message" name="message" role="form" ng-submit="send();">
+            <div class="form-group">
+                <label for="exampleInputEmail1">メッセージ</label>
+                <textarea ng-show="!iconMode" name="post" id="post" cols="30" rows="5" class="form-control"
+                          placeholder="Shift+Enterで送信できます" ng-model="post" shift-submit="message" required></textarea>
+                <div ng-show="iconMode" class="iconbox">
+                    <span ng-repeat="icon in icons" ng-click="insert(icon)">
+                        <span ng-bind-html="icon | emoji"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-default" ng-click="post = ''" value="クリア"/>
+                </div>
+                <div class="btn-group">
+                    <input type="button" class="btn btn-default" value="アイコン" ng-click="toggleIcon()"/>
+                </div>
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-primary" value="送信" />
+                </div>
+            </div>
+        </form>
+        <form id="filter" name="filters" role="form">
+            <input type="text" ng-model="query.word" placeholder="検索ワード" class="form-control"/>
+        </form>
+        <div class="list-group">
+            <div class="list-group-item slide-down"
+                 ng-repeat="message in messages|filter:{message:query.word,uid:query.uid}"
+                 ng-class="{'list-group-item-warning':message.uid == user.uid}">
+                <h4 class="list-group-item-heading">{{message.userName}}</h4>
+                <p>{{message.createDate | date: 'yyyy/MM/dd HH:mm:ss'}}</p>
+                <p class="list-group-item-text" ng-bind-html="message.message| linky:'_blank' | lineBreak | emoji"></p>
+            </div>
+        </div>
+    </div>
+</div>
